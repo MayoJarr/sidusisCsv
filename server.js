@@ -10,10 +10,30 @@ app.use(cors())
 app.use(bodyParser.json())
 
 // const city = "https://internet.gov.pl/api/cities/?page_size=150&has_address_points=true&voivodeship=2&search="
-const getStreet = (city, street) => `https://internet.gov.pl/api/streets/?city=${city}&search=${street}`
+const getStreet = (city, street, page) => `https://internet.gov.pl/api/streets/?city=${city}&search=${street}&page=${page}`
 const getCity = (city) => `https://internet.gov.pl/api/cities/?page_size=5&has_address_points=true&voivodeship=2&search=${city}`
 const getAddressPoint = (city, street, houseNumber) => `https://internet.gov.pl/api/address_points/?city=${city}&street=${street}&house_number=${houseNumber}&search="`
 
+let streets = []
+
+const fetchStreet = async (city, page) => {
+    console.log(page);
+    try {
+        const response = await axios.get(getStreet(city, "", page));
+        const data = response.data;
+
+        // Dodaj wyniki do tablicy ulic
+        streets.push(...data.results);
+
+        // Jeśli istnieje kolejna strona, rekurencyjnie pobierz
+        if (data.next != null) {
+            await new Promise(resolve => setTimeout(resolve, 2000)); // Opóźnienie 2 sekundy
+            await fetchStreet(city, page + 1);
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error.message);
+    }
+}
 
 app.get("/cities", async (req, res) => {
     const { city } = req.query;
@@ -32,11 +52,13 @@ app.get("/cities", async (req, res) => {
     }
 })
 app.get("/streets", async (req, res) => {
+    streets = []; // Reset listy ulic
     const { city } = req.query;
+
     try {
-        const response = await axios.get(getStreet(city, ""));
-        const data = response.data.results
-        res.json(data);
+        await fetchStreet(city, 1); // Początkowe wywołanie dla strony 1
+        console.log("end");
+        res.json(streets); // Wyślij dane dopiero po zakończeniu fetchowania
     } catch (error) {
         console.error('Error fetching data:', error.message);
         res.status(500).json({ error: 'Failed to fetch data from external API' });
