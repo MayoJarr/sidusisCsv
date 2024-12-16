@@ -29,4 +29,12 @@ input {
     border: 1px solid #eee;
     border-radius: 5px;
     background-color: #122;
+    padding: 10px;
+}
+.city {
+    background-color: #011;
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
 }

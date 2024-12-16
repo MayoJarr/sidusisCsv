@@ -1,24 +1,31 @@
 const btn = document.querySelector("#btn")
 const citylist = document.querySelector(".cityList")
-const API_URL = 'http://localhost:3000/cities';
+const API_URL = 'http://localhost:3000';
 
 const cityName = document.querySelector("#cityName")
 const sendBtn = document.querySelector("#send")
-const cities = []
+// const cities = []
+const streets = []
 
 const cityComponent = (name, voiv, county) => {
-    const d = document.createElement("li")
-    const b = document.createElement("button")
+    const d = document.createElement("div")
     d.classList.add("city")
     d.textContent = `${name} | ${voiv}, ${county} | wszystkie ulice`
-    b.textContent = ":"
-    d.appendChild(b)
     citylist.appendChild(d)
+    return d
 }
-const streetComponent = (name, voiv, county) => {
+const streetComponent = (name) => {
+    const d = document.createElement("div")
+    d.textContent = name
+    return d
 }
-const fetchData = async (city) => {
-    const url = `${API_URL}?city=${encodeURIComponent(city)}`;
+const waitIcon = () => {
+    const d = document.createElement("div")
+    d.textContent = "please wait..."
+    return d
+}
+const fetchCities = async (city) => {
+    const url = `${API_URL}/cities?city=${encodeURIComponent(city)}`;
     try {
         const response = await fetch(url);
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
@@ -29,11 +36,29 @@ const fetchData = async (city) => {
         console.error('Error:', error.message);
     }
 }
+const fetchStreets = async city => {
+    const url = `${API_URL}/streets?city=${encodeURIComponent(city)}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+        const data = await response.json();
+        data.forEach(street => streets.push(street))
+        console.log(streets)
+    } catch (error) {
+        console.error('Error:', error.message);
+    }
+}
 btn.addEventListener("click", async () => {
-    const { name, voiv, county, pk} = await fetchData(cityName.value)
-    console.log(name)
-    cities.push({name: name, pk: pk})
-    cityComponent(name, voiv, county)
+    const wait = waitIcon()
+    citylist.appendChild(wait)
+    const { name, voiv, county, pk} = await fetchCities(cityName.value)
+    await fetchStreets(pk)
+    // cities.push({name: name, pk: pk})
+    wait.remove()
+    const city = cityComponent(name, voiv, county)
+    streets.forEach(street => {
+        city.appendChild(streetComponent(street.name))
+    })
 })
 sendBtn.addEventListener("click", async () => {
     // cities.forEach(city => {

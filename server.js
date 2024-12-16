@@ -31,6 +31,17 @@ app.get("/cities", async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch data from external API' });
     }
 })
+app.get("/streets", async (req, res) => {
+    const { city } = req.query;
+    try {
+        const response = await axios.get(getStreet(city, ""));
+        const data = response.data.results
+        res.json(data);
+    } catch (error) {
+        console.error('Error fetching data:', error.message);
+        res.status(500).json({ error: 'Failed to fetch data from external API' });
+    }
+})
 app.post("/genCsv", async (req, res) => {
     const streets = []
     const cities = req.body
