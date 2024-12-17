@@ -25,15 +25,19 @@ input {
     color: #eee;
     padding: 7px;
 }
+input:focus {
+    outline: none;
+    border: 1px solid #58a;
+}
 .cityList {
     /* border: 1px solid #eee; */
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: #122;
     padding: 10px;
     width: 50%;
 }
 .city {
-    border: 1px solid #eee;
+    /* border: 1px solid #eee; */
     border-radius: 5px;
     /* background-color: #011; */
     padding: 5px;
