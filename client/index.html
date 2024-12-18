@@ -8,16 +8,39 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Tworzenie pliku do importu SIDUSIS</h1>
-    <div class="cityList">
-        <h2>Miejscowości:</h2>
-        <div>
-            <input type="text" id="cityName">
-            <button id="btn">dodaj</button>
-        </div>
-        <div class="city">Przeworno | dolnośląskie, powiat strzeliński | wszystkie ulice<div class="streetList"><div class="street">ul. Cicha</div><div class="street">ul. Klonowa</div><div class="street">ul. Kolejowa</div><div class="street">ul. Kościelna</div><div class="street">ul. Kwiatowa</div><div class="street">ul. Ogrodowa</div><div class="street">ul. Okrężna</div><div class="street">ul. Parkowa</div><div class="street">ul. Pocztowa</div><div class="street">ul. Pogodna</div><div class="street">ul. Polna</div><div class="street">ul. Przyjazna</div><div class="street">ul. Siemisławice</div><div class="street">ul. Słoneczna</div><div class="street">ul. Spokojna</div><div class="street">ul. Strzelińska</div><div class="street">ul. Szkolna</div><div class="street">ul. Wesoła</div><div class="street">ul. Wiśniowa</div><div class="street">ul. Wodna</div><div class="street">ul. Zielona</div><div class="street">ul. Ziębicka</div></div></div>
-    </div>
-    <h2>stwórz plik csv</h2>
-    <button id="send">start</button>
-</body>
+    <header>
+        <h5>Tworzenie pliku do importu SIDUSIS</h5>
+        <div> github help<button>generate</button></div>
+    </header>
+        <section>
+            <div class="upper">
+                <h3>Miejscowości</h3>
+                <button id="send">edit</button>
+            </div>
+                <div class="cityList list">
+                    <div>
+                        <input type="text" id="cityName" placeholder="Q search">
+                        <button id="btn">add</button>
+                    </div>
+                    <!-- <div class="city"> <span>Przeworno</span> | dolnośląskie, powiat strzeliński</div> -->
+                </div>
+        </section>
+        <section>
+            <div class="upper">
+                <h3>Ulice</h3>
+                <button>edit</button>
+            </div>
+            <div class="streetList list">
+                <div class="street">ul. Barbórki</div><div class="street">ul. Brzozowa</div><div class="street">ul. Grobla</div><div class="street">ul. Janusza Korczaka</div><div class="street">ul. Kasztanowa</div><div class="street">ul. Kolejowa</div><div class="street">ul. Krótka</div><div class="street">ul. Lawendowa</div><div class="street">ul. Leśna</div><div class="street">ul. Lipowa</div><div class="street">ul. Ludowa</div><div class="street">ul. Łąkowa</div><div class="street">ul. Malinowa</div><div class="street">ul. Mała</div><div class="street">ul. Nadrzeczna</div><div class="street">ul. Ogrodowa</div><div class="street">ul. Polna</div><div class="street">ul. Skalników</div><div class="street">ul. Sportowa</div><div class="street">ul. Spółdzielcza</div><div class="street">ul. Stanisława Staszica</div><div class="street">ul. Świerkowa</div><div class="street">ul. Wincentego Witosa</div><div class="street">ul. Władysława Sikorskiego</div>
+            </div>
+            <div class="streetCount">24</div>
+        </section>
+        <section>
+            <div class="upper">
+                <h3>Adresy</h3>
+                <button>edit</button>
+            </div>
+        </section>
+    </body>
+    <!-- <button id="send">Stwórz csv</button> -->
 </html>

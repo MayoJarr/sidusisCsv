@@ -1,57 +1,143 @@
-* {
-    font-family: Arial, Helvetica, sans-serif;
+/* Zmienne CSS dla kolorów i stylów */
+:root {
+    --primary-color: #0a7aff;
+    --secondary-color: #666666;
+    --background-color: #ddd;
+    --card-bg-color: rgba(240, 240, 240, 0.6);
+    --text-color: #000;
+    --border-color: #eee;
+    --border-radius: 20px;
 }
+
+* {
+    font-family: Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-size: 1.2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #011;
-    color: #eee;
+    background-color: var(--background-color);
+    background-image: url("../../mac2.jpg");
+    /* background: rgb(57,79,144); */
+    /* background: linear-gradient(142deg, rgba(57,79,144,1) 0%, rgba(10,122,255,1) 17%, rgba(207,239,246,1) 100%);  */
+    background-size: cover;
+    color: var(--text-color);
+    margin: 0;
+    height: 100vh;
+    display: grid;
+    gap: 10px;
+    grid-template-rows: 10% 88%;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 10px;
 }
+
+header {
+    grid-column: span 3;
+    background-color: var(--card-bg-color);
+    backdrop-filter: blur(6px);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+section {
+    background-color: var(--card-bg-color);
+    backdrop-filter: blur(8px);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    z-index: 0;
+}
+
+h3 {
+    margin: 0;
+}
+
 button {
     border: none;
-    background-color: #58e;
-    color: #eee;
-    border-radius: 5px;
-    padding: 7px;
-    margin: 7px;
-}
-input {
     background: none;
-    border: 1px solid #eee;
+    color: var(--primary-color);
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+button:hover {
+    cursor: pointer;
+    color: darken(var(--primary-color), 10%);
+}
+
+input {
+    background-color: var(--card-bg-color);
+    border:none;
     border-radius: 5px;
-    color: #eee;
     padding: 7px;
 }
+
 input:focus {
     outline: none;
-    border: 1px solid #58a;
+    border: 1px solid var(--primary-color);
+    border: none;
 }
-.cityList {
-    /* border: 1px solid #eee; */
-    border-radius: 10px;
-    background-color: #122;
-    padding: 10px;
-    width: 50%;
-}
+
 .city {
-    /* border: 1px solid #eee; */
     border-radius: 5px;
-    /* background-color: #011; */
     padding: 5px;
+    color: var(--secondary-color);
+    transition: background-color 0.3s;
 }
-.streetList {
+
+.city:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+span {
+    color: var(--text-color);
+}
+
+.list {
+    color: var(--secondary-color);
+    overflow-y: auto;
+    max-height: 95%;
+    padding-right: 5px;
+    z-index: 2;
+}
+
+.list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.list::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+}
+
+.upper {
     display: flex;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
 }
-.street {
-    margin-left: 10px;
-    font-size: 0.5rem;
+
+.streetCount {
+    position: absolute;
+    top: 30%;
+    right: 5%;
+    color: var(--card-bg-color);
+    font-size: 12em;
+    font-weight: bolder;
+    z-index: 1;
 }
-.street:hover {
-    color: #e33;
-    cursor: pointer;
-    text-decoration: line-through;
+
+@media (max-width: 768px) {
+    body {
+        grid-template-rows: auto;
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        grid-column: span 1;
+    }
 }

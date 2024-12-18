@@ -37,18 +37,16 @@ class UI {
 
     static createCityComponent(city) {
         const cityElement = document.createElement("div");
+        // const cityName = document.createElement("p")
         cityElement.classList.add("city");
-        cityElement.textContent = `${city.name} | ${city.voiv}, ${city.county} | wszystkie ulice`;
+        cityElement.dataset.key = city.pk;
+        // cityName.textContent = city.name
+        // cityElement.appendChild(cityName)
+        cityElement.innerHTML = `<span>${city.name}</span> | ${city.voiv}, ${city.county}`;
         UI.cityListElement.appendChild(cityElement);
-
-        const streetListElement = document.createElement("div");
-        streetListElement.classList.add("streetList");
-        cityElement.appendChild(streetListElement);
-
-        // Dodaj każdą ulicę do listy
-        city.streets.forEach(street => {
-            const streetElement = UI.createStreetComponent(street);
-            streetListElement.appendChild(streetElement);
+        cityElement.addEventListener("click", (e) => {
+            console.log(city.streets)
+            UI.populateStreetSection(city.streets)
         });
     }
 
@@ -57,6 +55,15 @@ class UI {
         streetElement.classList.add("street");
         streetElement.textContent = street.name;
         return streetElement;
+    }
+
+    static populateStreetSection(streets) {
+        const streetList = document.querySelector(".streetList");
+        streetList.textContent = "";
+        streets.forEach(street => {
+            console.log(street.name)
+            streetList.appendChild(this.createStreetComponent(street));
+        });
     }
 
     static createWaitIcon() {
@@ -78,19 +85,20 @@ const fetchCities = async (city) => {
     } catch (error) {
         console.error('Error:', error.message);
     }
-}
+};
 
 // Obsługa zdarzeń
 const btn = document.querySelector("#btn");
 const cityName = document.querySelector("#cityName");
 const sendBtn = document.querySelector("#send");
 
+const cities = [];
+
 btn.addEventListener("click", async () => {
     const waitIcon = UI.createWaitIcon();
     UI.cityListElement.appendChild(waitIcon);
 
     try {
-        // Pobierz dane miasta
         const cityData = await fetchCities(cityName.value);
         if (!cityData) {
             console.error("No city found");
@@ -101,8 +109,13 @@ btn.addEventListener("click", async () => {
         const city = new City(cityData.name, cityData.voiv, cityData.county, cityData.pk);
         await city.fetchStreets();
 
+        cities.push(city);
         waitIcon.remove();
         UI.createCityComponent(city);
+
+        // document.querySelectorAll(".city").forEach(cityElement => {
+
+        
     } catch (error) {
         console.error('Error:', error.message);
         waitIcon.remove();
@@ -110,14 +123,18 @@ btn.addEventListener("click", async () => {
 });
 
 sendBtn.addEventListener("click", async () => {
-    const cities = []; // Tutaj zbierasz dane o miastach (np. z komponentów UI)
     try {
         const response = await fetch(`${API_URL}/genCsv`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(cities),
+            body: JSON.stringify(cities.map(city => ({
+                name: city.name,
+                voiv: city.voiv,
+                county: city.county,
+                streets: city.streets.map(street => street.name)
+            }))),
         });
         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
         const data = await response.json();
@@ -126,3 +143,4 @@ sendBtn.addEventListener("click", async () => {
         console.error('Error:', error.message);
     }
 });
+
